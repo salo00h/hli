@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>معهد حضرموت للغات — نظام إدارة البيانات</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+:root {
+  --primary:#0d2744;
+  --primary-mid:#1a3a5c;
+  --primary-light:#2a5a8c;
+  --accent:#d4941a;
+  --accent-light:#f0b93a;
+  --success:#1e6e42;
+  --danger:#b92d2d;
+  --warning:#c47a10;
+  --bg:#eef2f7;
+  --card:#ffffff;
+  --border:#ccd8e8;
+  --text:#192636;
+  --text-muted:#5a7080;
+  --shadow:0 2px 16px rgba(13,39,68,.09);
+  --shadow-lg:0 8px 40px rgba(13,39,68,.16);
+  --r:12px;
+  --r-sm:7px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Cairo',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  direction:rtl;
+  min-height:100vh;
+  font-size:14px;
+}
+.app-header{
+  background:linear-gradient(120deg,var(--primary) 0%,var(--primary-light) 100%);
+  color:#fff;padding:16px 28px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+  box-shadow:0 4px 24px rgba(13,39,68,.3);
+  position:sticky;top:0;z-index:200;
+}
+.header-brand{display:flex;align-items:center;gap:14px}
+.header-logo{
+  width:56px;
+  height:56px;
+  border-radius:10px;
+  object-fit:contain;
+  background:#fff;
+  padding:4px;
+  flex-shrink:0;
+}
+.header-title h1{font-size:1rem;font-weight:900;line-height:1.2}
+.header-title p{font-size:.75rem;opacity:.75;margin-top:2px}
+.header-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 16px;border:none;border-radius:var(--r-sm);
+  font-family:'Cairo',sans-serif;font-size:.84rem;font-weight:700;
+  cursor:pointer;transition:all .16s ease;white-space:nowrap;text-decoration:none;
+}
+.btn:active{transform:scale(.96)}
+.btn-primary{background:var(--accent);color:var(--primary)}
+.btn-primary:hover{background:var(--accent-light)}
+.btn-outline{background:rgba(255,255,255,.13);color:#fff;border:1.5px solid rgba(255,255,255,.28)}
+.btn-outline:hover{background:rgba(255,255,255,.22)}
+.btn-success{background:var(--success);color:#fff}
+.btn-success:hover{opacity:.88}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-danger:hover{opacity:.88}
+.btn-ghost{background:transparent;color:var(--primary-mid);border:1.5px solid var(--border)}
+.btn-ghost:hover{background:var(--bg)}
+.btn-whatsapp{background:#25d366;color:#fff}
+.btn-whatsapp:hover{background:#1da952}
+.btn-pdf{background:#c0392b;color:#fff}
+.btn-pdf:hover{background:#a93226}
+.btn-sm{padding:5px 12px;font-size:.78rem}
+.btn-xs{padding:3px 8px;font-size:.74rem}
+.btn-icon-only{padding:6px;border-radius:6px}
+.container{max-width:1120px;margin:0 auto;padding:26px 18px}
+.info-bar{
+  background:linear-gradient(90deg,#e8f4fd,#fff8ec);
+  border:1px solid #b8d8f0;border-radius:var(--r);
+  padding:14px 20px;margin-bottom:22px;
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.info-bar-icon{font-size:1.4rem}
+.info-bar-text{font-size:.83rem;color:#1a4a6e;flex:1}
+.info-bar-text strong{font-weight:700}
+.tabs-bar{
+  display:flex;gap:6px;
+  background:var(--card);
+  border:1px solid var(--border);border-radius:var(--r);
+  padding:6px;margin-bottom:22px;
+  box-shadow:var(--shadow);
+}
+.tab-btn{
+  flex:1;padding:9px 12px;border:none;border-radius:var(--r-sm);
+  font-family:'Cairo',sans-serif;font-size:.86rem;font-weight:700;
+  cursor:pointer;transition:all .18s;background:transparent;color:var(--text-muted);
+}
+.tab-btn.active{background:var(--primary-mid);color:#fff;box-shadow:0 2px 10px rgba(26,58,92,.25)}
+.section-card{
+  background:var(--card);border-radius:var(--r);
+  box-shadow:var(--shadow);border:1px solid var(--border);
+  margin-bottom:20px;overflow:hidden;
+  animation:fadeUp .3s ease;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.section-header{
+  background:linear-gradient(90deg,var(--primary) 0%,var(--primary-mid) 100%);
+  color:#fff;padding:13px 20px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+}
+.section-header h2{font-size:.9rem;font-weight:800;display:flex;align-items:center;gap:8px}
+.section-header-actions{display:flex;gap:8px}
+.section-body{padding:18px 20px}
+.section-card.collapsed .section-body{display:none}
+.section-header.clickable{cursor:pointer}
+.section-toggle{
+  font-size:.9rem;
+  opacity:.85;
+  transition:transform .2s ease;
+}
+.section-card:not(.collapsed) .section-toggle{transform:rotate(180deg)}
+.section-tab-bar{
+  display:flex;border-bottom:2px solid var(--border);margin-bottom:16px;gap:2px;
+}
+.section-tab{
+  padding:7px 16px;font-family:'Cairo',sans-serif;font-size:.82rem;font-weight:700;
+  border:none;background:transparent;color:var(--text-muted);cursor:pointer;
+  border-bottom:2.5px solid transparent;margin-bottom:-2px;transition:all .15s;
+}
+.section-tab.active{color:var(--primary-mid);border-bottom-color:var(--primary-mid)}
+.section-panel{display:none}
+.section-panel.active{display:block}
+.field-list{display:flex;flex-direction:column;gap:9px;margin-bottom:14px}
+.field-item{
+  background:#f5f8fc;border:1px solid var(--border);border-radius:var(--r-sm);
+  padding:10px 12px;display:flex;align-items:flex-start;gap:9px;flex-wrap:wrap;
+  transition:box-shadow .15s;
+}
+.field-item:hover{box-shadow:0 2px 10px rgba(13,39,68,.08)}
+.field-item.dragging{opacity:.5;box-shadow:0 8px 28px rgba(13,39,68,.18)}
+.field-item.preset{border-right:3px solid var(--accent)}
+.drag-handle{cursor:grab;color:var(--text-muted);padding:3px 2px;user-select:none;font-size:1rem;flex-shrink:0}
+.drag-handle:active{cursor:grabbing}
+.field-row{flex:1;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.f-input,.f-select{
+  border:1.5px solid var(--border);border-radius:var(--r-sm);
+  padding:6px 10px;font-family:'Cairo',sans-serif;font-size:.86rem;
+  background:#fff;color:var(--text);outline:none;transition:border-color .14s;
+}
+.f-input:focus,.f-select:focus{border-color:var(--primary-light)}
+.f-input{min-width:150px;flex:1}
+.f-select{min-width:140px}
+.f-options{
+  width:100%;border:1.5px dashed var(--accent);border-radius:var(--r-sm);
+  padding:6px 10px;font-family:'Cairo',sans-serif;font-size:.82rem;
+  color:var(--text);background:#fffaee;outline:none;
+}
+.f-required-label{
+  display:flex;align-items:center;gap:5px;
+  font-size:.78rem;color:var(--text-muted);cursor:pointer;white-space:nowrap;
+}
+.f-required-label input{accent-color:var(--accent)}
+.preset-badge{
+  font-size:.68rem;font-weight:700;padding:2px 7px;border-radius:50px;
+  background:var(--accent);color:var(--primary);white-space:nowrap;
+}
+.form-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;
+  padding:4px 0;
+}
+.form-group{display:flex;flex-direction:column;gap:4px}
+.form-group label{
+  font-size:.8rem;font-weight:700;color:var(--primary-mid);
+  display:flex;align-items:center;gap:4px;
+}
+.form-group label .req{color:var(--danger);font-size:.9em}
+.form-control{
+  border:1.5px solid var(--border);border-radius:var(--r-sm);
+  padding:6px 9px;font-family:'Cairo',sans-serif;font-size:.8rem;
+  color:var(--text);background:#fff;outline:none;width:100%;
+  transition:border-color .14s,box-shadow .14s;
+}
+.form-control:focus{
+  border-color:var(--primary-light);
+  box-shadow:0 0 0 3px rgba(42,90,140,.10);
+}
+textarea.form-control{resize:vertical;min-height:72px}
+select.form-control{
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%235a7080' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:8px center;padding-left:28px
+}
+.empty-fields-msg{
+  grid-column:1/-1;color:var(--text-muted);font-size:.84rem;
+  padding:10px;background:#f9fbfd;border-radius:var(--r-sm);
+  border:1px dashed var(--border);text-align:center;
+}
+.collapse-toggle{
+  display:flex;align-items:center;gap:8px;width:100%;
+  background:none;border:none;padding:0;cursor:pointer;
+  font-family:'Cairo',sans-serif;font-size:.82rem;font-weight:700;
+  color:var(--primary-mid);margin-bottom:10px;
+}
+.collapse-toggle .arrow{transition:transform .2s;font-size:.75rem}
+.collapse-toggle.open .arrow{transform:rotate(180deg)}
+.collapsible{display:none}
+.collapsible.open{display:block}
+.add-section-card{
+  background:var(--card);border-radius:var(--r);
+  border:2px dashed var(--border);padding:20px;
+  text-align:center;margin-bottom:22px;cursor:pointer;
+  transition:border-color .18s,background .18s;
+}
+.add-section-card:hover{border-color:var(--accent);background:#fffaee}
+.add-section-form{
+  display:none;margin-top:14px;
+  align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;
+}
+.add-section-form.visible{display:flex}
+.preview-section{
+  background:var(--card);border-radius:var(--r);
+  box-shadow:var(--shadow-lg);border:1px solid var(--border);
+  margin-bottom:32px;overflow:hidden;
+}
+.preview-header{
+  background:linear-gradient(120deg,var(--primary) 0%,var(--primary-light) 100%);
+  color:#fff;padding:16px 24px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+}
+.preview-header h2{font-size:1rem;font-weight:900}
+.preview-actions{display:flex;gap:8px;flex-wrap:wrap}
+#pdf-content{padding:28px 32px;direction:rtl}
+.pdf-header-block{
+  text-align:center;border-bottom:2px solid var(--primary);padding-bottom:16px;margin-bottom:20px;
+}
+.pdf-institute-name{font-size:1.3rem;font-weight:900;color:var(--primary);margin-bottom:4px}
+.pdf-doc-title{font-size:1rem;font-weight:700;color:var(--primary-mid);margin-bottom:4px}
+.pdf-date{font-size:.78rem;color:var(--text-muted)}
+.pdf-section{margin-bottom:18px;border:1px solid var(--border);border-radius:var(--r-sm);overflow:hidden}
+.pdf-section-title{
+  background:var(--primary-mid);color:#fff;
+  padding:7px 14px;font-weight:700;font-size:.9rem;
+  display:flex;align-items:center;gap:7px;
+}
+.pdf-fields{
+  padding:10px 14px;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;
+}
+.pdf-field{display:flex;flex-direction:column;gap:2px}
+.pdf-field-label{font-size:.7rem;color:var(--text-muted);font-weight:700;text-transform:uppercase}
+.pdf-field-value{
+  font-size:.88rem;color:var(--text);font-weight:500;
+  border-bottom:1px solid #e0e8f0;padding-bottom:3px;min-height:20px;
+}
+.pdf-empty{color:var(--text-muted);font-style:italic;font-size:.82rem;padding:10px 14px}
+#toast-container{
+  position:fixed;bottom:26px;left:50%;transform:translateX(-50%);
+  z-index:9999;display:flex;flex-direction:column;gap:8px;
+  align-items:center;pointer-events:none;
+}
+.toast{
+  background:var(--primary);color:#fff;
+  padding:11px 24px;border-radius:50px;
+  font-family:'Cairo',sans-serif;font-size:.88rem;font-weight:600;
+  box-shadow:0 6px 28px rgba(13,39,68,.3);
+  animation:toastIn .28s ease,toastOut .4s ease 2.3s forwards;
+  pointer-events:auto;display:flex;align-items:center;gap:8px;
+}
+.toast.success{background:var(--success)}
+.toast.danger{background:var(--danger)}
+.toast.warning{background:var(--warning)}
+@keyframes toastIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes toastOut{from{opacity:1}to{opacity:0;transform:translateY(-8px)}}
+.modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.52);z-index:1000;
+  align-items:center;justify-content:center;padding:20px;
+}
+.modal-overlay.active{display:flex}
+.modal{
+  background:var(--card);border-radius:var(--r);padding:26px;
+  max-width:480px;width:100%;
+  box-shadow:0 16px 60px rgba(0,0,0,.28);
+  animation:fadeUp .22s ease;
+}
+.modal h3{font-size:1.05rem;font-weight:800;color:var(--primary);margin-bottom:12px}
+.modal-body{font-size:.88rem;color:var(--text);margin-bottom:16px}
+.modal textarea{
+  width:100%;height:160px;border:1.5px solid var(--border);border-radius:var(--r-sm);
+  padding:10px;font-family:monospace;font-size:.78rem;resize:vertical;
+  margin-bottom:14px;direction:ltr;
+}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end}
+.divider-label{
+  text-align:center;margin:14px 0;position:relative;
+  font-size:.78rem;color:var(--text-muted);font-weight:700;letter-spacing:.5px;
+}
+.divider-label::before,.divider-label::after{
+  content:'';position:absolute;top:50%;width:44%;height:1px;background:var(--border);
+}
+.divider-label::before{right:0}
+.divider-label::after{left:0}
+@media(max-width:700px){
+  .app-header{padding:12px 14px;flex-direction:column;align-items:flex-start}
+  .header-actions{width:100%;justify-content:flex-start}
+  .container{padding:14px 10px}
+  .section-body{padding:14px 12px}
+  .form-grid{grid-template-columns:1fr}
+  .tabs-bar{flex-direction:column}
+  #pdf-content{padding:16px}
+}
+@media print{
+  .app-header,.tabs-bar,.section-card,.add-section-card,.info-bar,
+  #toast-container,.modal-overlay,.preview-actions{display:none!important}
+  .preview-section{box-shadow:none;border:none}
+  #pdf-content{padding:0}
+}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="header-brand">
+    <img src="https://i.postimg.cc/RCWP046S/logo.jpg" alt="شعار معهد حضرموت للغات" class="header-logo" crossorigin="anonymous" />
+    <div class="header-title">
+      <h1>معهد حضرموت للغات</h1>
+      <p>نظام إدارة البيانات — نموذج مرن</p>
+    </div>
+  </div>
+  <div class="header-actions">
+    <button class="btn btn-pdf btn-sm" onclick="generatePDF()">📄 توليد PDF</button>
+    <button class="btn btn-whatsapp btn-sm" onclick="openWhatsApp()">💬 إرسال عبر واتساب</button>
+    <button class="btn btn-outline btn-sm" onclick="sendEmail()">📧 إرسال عبر الإيميل</button>
+  </div>
+</header>
+
+<div class="container">
+  <div class="info-bar">
+    <span class="info-bar-icon">💡</span>
+    <div class="info-bar-text">
+      
+      <strong>
+      هذه الصفحة مخصصة فقط لتجميع بيانات المعهد بشكل منظم، بهدف بناء قاعدة بيانات مستقبلية، وليست نظام إدارة أو موقع نهائي.
+      </strong>
+      <br><br>
+
+      هذه الصفحة مخصصة لمراجعة نموذج بيانات المعهد بشكل مبسط ومنظم.
+      <br><br>
+
+      جميع الأقسام تبدأ مغلقة لتسهيل التصفح، ويمكنكم فتح أي قسم وتعديل الحقول حسب احتياجكم.
+      <br><br>
+
+      بعد الانتهاء:
+      <br>
+      1️⃣ اضغط على <strong>توليد PDF</strong>
+      <br>
+      2️⃣ أرسل الملف عبر <strong>واتساب أو البريد الإلكتروني</strong>
+      <br><br>
+
+      📩 البريد الإلكتروني:
+      <br>
+      <a href="mailto:Saleh738297@gmail.com">Saleh738297@gmail.com</a>
+      <br>
+      <a href="mailto:emadbagubair@gmail.com">emadbagubair@gmail.com</a>
+
+    </div>
+  </div>
+</div>
+
+  <div class="top-guide-card" style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px 18px;margin-bottom:18px;box-shadow:var(--shadow);">
+    <div style="font-weight:800;color:var(--primary);margin-bottom:6px;">طريقة الاستخدام</div>
+    <div style="font-size:.83rem;color:var(--text-muted);line-height:1.9;">
+      افتح أي قسم وراجع الحقول الموجودة بداخله، ويمكنك تعديلها حسب رغبتك.<br><br>
+      بعد الانتهاء:
+      <br>
+      - اضغط <strong>توليد PDF</strong><br>
+      - أرسل الملف عبر واتساب أو البريد الإلكتروني
+    </div>
+  </div>
+
+  <div id="tab-setup" class="tab-content" style="display:block">
+    <div id="setup-sections-container"></div>
+    <div class="add-section-card" id="add-section-card">
+      <div onclick="toggleAddSectionForm()">
+        <div style="font-size:2rem">➕</div>
+        <div style="font-weight:700;color:var(--primary-mid);margin-top:6px">إضافة قسم مخصص جديد</div>
+        <div style="font-size:.8rem;color:var(--text-muted)">مثل: ولي أمر، موظف، دورة، إدارة...</div>
+      </div>
+      <div class="add-section-form" id="add-section-form">
+        <input type="text" id="new-section-name" class="form-control" placeholder="اسم القسم الجديد" style="max-width:220px"/>
+        <input type="text" id="new-section-icon" class="form-control" placeholder="أيقونة مثل 👤" style="max-width:90px"/>
+        <button class="btn btn-primary" onclick="addCustomSection()">إضافة</button>
+        <button class="btn btn-ghost" onclick="toggleAddSectionForm()">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-preview" class="tab-content" style="display:block">
+    <div class="preview-section">
+      <div class="preview-header">
+        <h2>👁️ المعاينة النهائية</h2>
+        <div class="preview-actions">
+          <button class="btn btn-pdf btn-sm" onclick="generatePDF()">📄 توليد PDF</button>
+        </div>
+      </div>
+      <div id="pdf-content">
+        <div class="pdf-header-block">
+          <div style="text-align:center; margin-bottom:8px;">
+            <img src="https://i.postimg.cc/RCWP046S/logo.jpg" alt="شعار المعهد" crossorigin="anonymous" style="width:70px;height:70px;object-fit:contain;" />
+          </div>
+          <div class="pdf-institute-name">معهد حضرموت للغات</div>
+          <div class="pdf-doc-title">نموذج بيانات المعهد</div>
+          <div class="pdf-date" id="preview-date"></div>
+        </div>
+        <div id="preview-body"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<div class="modal-overlay" id="import-modal">
+  <div class="modal">
+    <h3>📥 استيراد إعدادات JSON</h3>
+    <div class="modal-body">الصق محتوى ملف JSON المُصدَّر مسبقاً:</div>
+    <textarea id="import-json-text" placeholder='{"sections":[...]}' dir="ltr"></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeImportModal()">إلغاء</button>
+      <button class="btn btn-success" onclick="importJSON()">✅ استيراد</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="reset-modal">
+  <div class="modal">
+    <h3>⚠️ تأكيد إعادة التعيين</h3>
+    <div class="modal-body">سيتم حذف جميع الإعدادات والبيانات المدخلة وإعادة الحقول الافتراضية. هل أنت متأكد؟</div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeResetModal()">إلغاء</button>
+      <button class="btn btn-danger" onclick="resetAll()">🔄 إعادة تعيين الكل</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const FIELD_TYPES = {
+  text:     { label:'نص قصير',       inputType:'text',     ph:'أدخل نصاً...' },
+  number:   { label:'رقم',           inputType:'number',   ph:'أدخل رقماً...' },
+  date:     { label:'تاريخ',         inputType:'date',     ph:'' },
+  tel:      { label:'هاتف',          inputType:'tel',      ph:'+967xxxxxxxxx' },
+  email:    { label:'بريد إلكتروني', inputType:'email',    ph:'example@mail.com' },
+  select:   { label:'قائمة اختيار',  inputType:'select',   ph:'اختر...' },
+  textarea: { label:'ملاحظات طويلة', inputType:'textarea', ph:'أدخل ملاحظاتك...' }
+};
+
+function makeField(name, type, options=[], required=false) {
+  return {
+    id: 'f_' + Math.random().toString(36).substr(2,8),
+    name, type, options, required, preset: true
+  };
+}
+
+const DEFAULT_SECTIONS = [
+  {
+    id:'student', name:'الطالب', icon:'🎓', isDefault:true, fields:[
+      makeField('الاسم الأول','text',[],true),
+      makeField('اسم العائلة','text',[],true),
+      makeField('كود الطالب','text',[]),
+      makeField('تاريخ الميلاد','date',[]),
+      makeField('الجنس','select',['ذكر','أنثى']),
+      makeField('الجنسية','text',[]),
+      makeField('البريد الإلكتروني','email',[]),
+      makeField('رقم الهاتف','tel',[]),
+      makeField('اللغة المفضلة للتعلم','select',['العربية','الإنجليزية','الفرنسية','الإسبانية','الألمانية','الصينية','اليابانية']),
+      makeField('المستوى الحالي','select',['A1 - مبتدئ','A2 - ما قبل المتوسط','B1 - متوسط','B2 - فوق المتوسط','C1 - متقدم','C2 - إتقان']),
+      makeField('حالة التسجيل','select',['مرشح (Lead)','طلب تقديم','مقبول','مسجّل','موقف','منتهي']),
+      makeField('ملاحظات','textarea',[])
+    ], values:{}
+  },
+  {
+    id:'guardian', name:'ولي الأمر', icon:'👨‍👩‍👧', isDefault:true, fields:[
+      makeField('الاسم الكامل','text',[],true),
+      makeField('صلة القرابة','select',['أب','أم','أخ','أخت','عم','خال','وصي قانوني','آخر']),
+      makeField('رقم الهاتف','tel',[],true),
+      makeField('البريد الإلكتروني','email',[]),
+      makeField('جهة الاتصال للطوارئ','select',['نعم','لا']),
+      makeField('ملاحظات','textarea',[])
+    ], values:{}
+  },
+  {
+    id:'teacher', name:'المعلم', icon:'👩‍🏫', isDefault:true, fields:[
+      makeField('الاسم الأول','text',[],true),
+      makeField('اسم العائلة','text',[],true),
+      makeField('البريد الإلكتروني','email',[],true),
+      makeField('رقم الهاتف','tel',[]),
+      makeField('التخصص / اللغة التي يدرّسها','select',['الإنجليزية','الفرنسية','الإسبانية','الألمانية','الصينية','اليابانية','العربية','آخر']),
+      makeField('السيرة الذاتية المختصرة','textarea',[]),
+      makeField('تاريخ التعيين','date',[]),
+      makeField('حالة التوظيف','select',['دوام كامل','دوام جزئي','متعاقد','إجازة']),
+      makeField('ملاحظات','textarea',[])
+    ], values:{}
+  },
+  {
+    id:'classroom', name:'القاعة / الفصل', icon:'🏫', isDefault:true, fields:[
+      makeField('اسم القاعة','text',[],true),
+      makeField('كود القاعة','text',[]),
+      makeField('الطابق / الموقع','text',[]),
+      makeField('السعة القصوى (طلاب)','number',[]),
+      makeField('التجهيزات','select',['سبورة عادية','سبورة ذكية','بروجكتور','شاشة','مختبر لغة','آخر']),
+      makeField('الحالة','select',['متاحة','مشغولة','صيانة','مغلقة']),
+      makeField('ملاحظات','textarea',[])
+    ], values:{}
+  },
+  {
+    id:'course', name:'الدورة / البرنامج', icon:'📖', isDefault:true, fields:[
+      makeField('اسم الدورة','text',[],true),
+      makeField('كود الدورة','text',[]),
+      makeField('اللغة','select',['الإنجليزية','الفرنسية','الإسبانية','الألمانية','الصينية','اليابانية','آخر']),
+      makeField('المستوى (CEFR)','select',['A1','A2','B1','B2','C1','C2']),
+      makeField('وصف الدورة','textarea',[]),
+      makeField('مدة الدورة (ساعات)','number',[]),
+      makeField('عدد الجلسات الإجمالي','number',[]),
+      makeField('طريقة التقديم','select',['حضوري','أونلاين','هجين']),
+      makeField('الفئة المستهدفة','select',['أطفال','مراهقون','بالغون','جميع الأعمار']),
+      makeField('مؤهَّل للشهادة','select',['نعم','لا']),
+      makeField('حالة الدورة','select',['نشطة','موقوفة','منتهية','قيد التطوير']),
+      makeField('ملاحظات','textarea',[])
+    ], values:{}
+  },
+  {
+    id:'group', name:'المجموعة / الفوج', icon:'👥', isDefault:true, fields:[
+      makeField('اسم المجموعة','text',[],true),
+      makeField('الدورة المرتبطة','text',[]),
+      makeField('المعلم المسؤول','text',[]),
+      makeField('القاعة','text',[]),
+      makeField('الفترة الأكاديمية','text',[]),
+      makeField('الحد الأقصى للطلاب','number',[]),
+      makeField('عدد الطلاب الحالي','number',[]),
+      makeField('أيام الدراسة','select',['السبت-الثلاثاء','الأحد-الثلاثاء-الخميس','الإثنين-الأربعاء','يومياً','آخر']),
+      makeField('وقت البداية','text',[],false),
+      makeField('وقت النهاية','text',[],false),
+      makeField('طريقة التقديم','select',['حضوري','أونلاين','هجين']),
+      makeField('حالة المجموعة','select',['مخططة','جارية','منتهية','ملغاة']),
+      makeField('ملاحظات','textarea',[])
+    ], values:{}
+  },
+  {
+    id:'enrollment', name:'التسجيل / الالتحاق', icon:'📋', isDefault:true, fields:[
+      makeField('اسم الطالب','text',[],true),
+      makeField('المجموعة','text',[],true),
+      makeField('الدورة','text',[]),
+      makeField('تاريخ التسجيل','date',[]),
+      makeField('حالة التسجيل','select',['منتظر','مسجّل','مكتمل','موقف','منسحب','راسب']),
+      makeField('طريقة التسليم','select',['حضوري','أونلاين','هجين']),
+      makeField('المستوى عند الالتحاق','select',['A1','A2','B1','B2','C1','C2']),
+      makeField('ملاحظات','textarea',[])
+    ], values:{}
+  },
+  {
+    id:'finance', name:'المالية والدفع', icon:'💰', isDefault:false, fields:[
+      makeField('اسم الطالب','text',[],true),
+      makeField('رقم الفاتورة','text',[]),
+      makeField('المبلغ الإجمالي','number',[]),
+      makeField('المبلغ المدفوع','number',[]),
+      makeField('المبلغ المتبقي','number',[]),
+      makeField('تاريخ الفاتورة','date',[]),
+      makeField('تاريخ الاستحقاق','date',[]),
+      makeField('طريقة الدفع','select',['نقداً','تحويل بنكي','شيك','آخر']),
+      makeField('حالة الفاتورة','select',['مسودة','مُرسلة','مدفوعة جزئياً','مدفوعة بالكامل','متأخرة','ملغاة']),
+      makeField('الخصم','number',[]),
+      makeField('ملاحظات','textarea',[])
+    ], values:{}
+  },
+  {
+    id:'attendance', name:'الحضور والغياب', icon:'✅', isDefault:false, fields:[
+      makeField('اسم الطالب','text',[],true),
+      makeField('المجموعة','text',[]),
+      makeField('تاريخ الجلسة','date',[],true),
+      makeField('الحالة','select',['حاضر','غائب','متأخر','معذور'],true),
+      makeField('ملاحظة الغياب','text',[]),
+      makeField('تم تقديم عذر','select',['نعم','لا']),
+      makeField('ملاحظات','textarea',[])
+    ], values:{}
+  }
+];
+
+let appState = { sections: [] };
+let currentTab = 'setup';
+
+function initApp() {
+  const saved = localStorage.getItem('hli_state_v2');
+  if (saved) {
+    try {
+      appState = JSON.parse(saved);
+      appState.sections.forEach(s => {
+        if (!s.values) s.values = {};
+        if (!s.fields) s.fields = [];
+        s.fields.forEach(f => { if (f.options === undefined) f.options = []; });
+      });
+    } catch(e) {
+      appState = { sections: deepClone(DEFAULT_SECTIONS) };
+    }
+  } else {
+    appState = { sections: deepClone(DEFAULT_SECTIONS) };
+  }
+  renderAll();
+  updatePreviewDate();
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  const setup = document.getElementById('tab-setup');
+  const preview = document.getElementById('tab-preview');
+  if (setup) setup.style.display = 'block';
+  if (preview) preview.style.display = 'block';
+  renderPreview();
+}
+
+function renderAll() {
+  renderSetupSections();
+  renderPreview();
+}
+
+function renderSetupSections() {
+  const container = document.getElementById('setup-sections-container');
+  container.innerHTML = '';
+  appState.sections.forEach(section => {
+    container.appendChild(buildSetupCard(section));
+  });
+}
+
+function buildSetupCard(section) {
+  const card = document.createElement('div');
+  card.className = 'section-card collapsed';
+  card.id = 'setup-card-' + section.id;
+
+  card.innerHTML = `
+    <div class="section-header clickable" onclick="toggleSection('${section.id}')">
+      <h2>
+        <span class="section-toggle">⌄</span>
+        ${section.icon || '📁'} ${section.name}
+        ${!section.isDefault ? '' : '<span style="font-size:.68rem;opacity:.7;font-weight:400">(أساسي)</span>'}
+      </h2>
+      <div class="section-header-actions" onclick="event.stopPropagation()">
+        ${!section.isDefault ? `<button class="btn btn-danger btn-sm" onclick="deleteSection('${section.id}')">🗑️ حذف</button>` : ''}
+      </div>
+    </div>
+    <div class="section-body">
+      <div style="font-size:.78rem;color:var(--text-muted);margin-bottom:10px;font-weight:600">
+        ⚙️ إعداد الحقول — يمكن تعديل الاسم أو النوع أو حذف أي حقل أو إضافة حقول جديدة
+      </div>
+      <div class="field-list" id="fl-${section.id}" data-sid="${section.id}"></div>
+      <button class="btn btn-ghost btn-sm" onclick="addField('${section.id}')">➕ إضافة حقل جديد</button>
+    </div>
+  `;
+
+  const fieldList = card.querySelector('#fl-' + section.id);
+  section.fields.forEach(field => {
+    fieldList.appendChild(buildFieldItem(section.id, field));
+  });
+
+  setupDnD(fieldList, section.id);
+  return card;
+}
+
+function buildFieldItem(sectionId, field) {
+  const item = document.createElement('div');
+  item.className = 'field-item' + (field.preset ? ' preset' : '');
+  item.draggable = true;
+  item.dataset.fieldId = field.id;
+
+  const typeOpts = Object.entries(FIELD_TYPES).map(([v,d]) =>
+    `<option value="${v}"${field.type===v?' selected':''}>${d.label}</option>`
+  ).join('');
+
+  item.innerHTML = `
+    <span class="drag-handle" title="اسحب لإعادة الترتيب">⠿</span>
+    <div class="field-row">
+      <input class="f-input" type="text" value="${esc(field.name)}"
+        placeholder="اسم الحقل"
+        onchange="updateFieldProp('${sectionId}','${field.id}','name',this.value)" />
+      <select class="f-select"
+        onchange="updateFieldType('${sectionId}','${field.id}',this.value)">
+        ${typeOpts}
+      </select>
+      ${field.preset ? '<span class="preset-badge">افتراضي</span>' : ''}
+      <label class="f-required-label">
+        <input type="checkbox" ${field.required?'checked':''}
+          onchange="updateFieldProp('${sectionId}','${field.id}','required',this.checked)"/>
+        إلزامي
+      </label>
+      ${field.type==='select' ? `
+        <input class="f-options" type="text"
+          placeholder="الخيارات مفصولة بفاصلة مثل: خيار1, خيار2"
+          value="${esc((field.options||[]).join(', '))}"
+          onchange="updateFieldOptions('${sectionId}','${field.id}',this.value)" />
+      ` : ''}
+    </div>
+    <button class="btn btn-danger btn-xs btn-icon-only" title="حذف"
+      onclick="deleteField('${sectionId}','${field.id}')">✕</button>
+  `;
+  return item;
+}
+
+function renderEntryForms() {
+  const container = document.getElementById('entry-sections-container');
+  if (!container) return;
+  container.innerHTML = '';
+  appState.sections.forEach(section => {
+    const card = document.createElement('div');
+    card.className = 'section-card';
+    card.innerHTML = `
+      <div class="section-header">
+        <h2>${section.icon || '📁'} ${section.name}</h2>
+      </div>
+      <div class="section-body">
+        <div class="form-grid" id="eg-${section.id}"></div>
+      </div>
+    `;
+    const grid = card.querySelector('#eg-' + section.id);
+    if (!section.fields.length) {
+      grid.innerHTML = '<div class="empty-fields-msg">لا توجد حقول — أضف حقولاً من تبويب "إعداد الحقول"</div>';
+    } else {
+      section.fields.forEach(field => grid.appendChild(buildEntryInput(section.id, field)));
+    }
+    container.appendChild(card);
+  });
+}
+
+function buildEntryInput(sectionId, field) {
+  const group = document.createElement('div');
+  group.className = 'form-group';
+  if (field.type === 'textarea') group.style.gridColumn = '1/-1';
+
+  const typeDef = FIELD_TYPES[field.type] || FIELD_TYPES.text;
+  const section = getSectionById(sectionId);
+  const val = section ? (section.values[field.id] || '') : '';
+
+  group.innerHTML = `<label>${esc(field.name)}${field.required ? '<span class="req">*</span>' : ''}</label>`;
+
+  let input;
+  if (field.type === 'textarea') {
+    input = document.createElement('textarea');
+    input.className = 'form-control';
+    input.placeholder = typeDef.ph;
+    input.value = val;
+  } else if (field.type === 'select') {
+    input = document.createElement('select');
+    input.className = 'form-control';
+    const defOpt = document.createElement('option');
+    defOpt.value = '';
+    defOpt.textContent = '— اختر —';
+    input.appendChild(defOpt);
+    (field.options || []).forEach(opt => {
+      const o = document.createElement('option');
+      o.value = opt.trim();
+      o.textContent = opt.trim();
+      if (val === opt.trim()) o.selected = true;
+      input.appendChild(o);
+    });
+  } else {
+    input = document.createElement('input');
+    input.type = typeDef.inputType;
+    input.className = 'form-control';
+    input.placeholder = typeDef.ph;
+    input.value = val;
+  }
+
+  const onChange = () => updateValue(sectionId, field.id, input.value);
+  input.addEventListener('change', onChange);
+  input.addEventListener('input', onChange);
+  group.appendChild(input);
+  return group;
+}
+
+function setupDnD(list, sectionId) {
+  let src = null;
+  list.addEventListener('dragstart', e => {
+    src = e.target.closest('.field-item');
+    if (src) setTimeout(() => src.classList.add('dragging'), 0);
+  });
+  list.addEventListener('dragend', () => {
+    if (src) src.classList.remove('dragging');
+    src = null;
+  });
+  list.addEventListener('dragover', e => {
+    e.preventDefault();
+    const over = e.target.closest('.field-item');
+    if (!over || !src || over === src) return;
+    const rect = over.getBoundingClientRect();
+    if (e.clientY < rect.top + rect.height / 2) {
+      list.insertBefore(src, over);
+    } else {
+      list.insertBefore(src, over.nextSibling);
+    }
+  });
+  list.addEventListener('drop', e => {
+    e.preventDefault();
+    const section = getSectionById(sectionId);
+    if (!section) return;
+    const newOrder = [];
+    list.querySelectorAll('.field-item').forEach(item => {
+      const f = section.fields.find(f => f.id === item.dataset.fieldId);
+      if (f) newOrder.push(f);
+    });
+    section.fields = newOrder;
+    saveToStorage();
+    renderPreview();
+  });
+}
+
+function addField(sectionId) {
+  const section = getSectionById(sectionId);
+  if (!section) return;
+  const newField = {
+    id: 'f_' + Math.random().toString(36).substr(2,8),
+    name: 'حقل جديد',
+    type: 'text',
+    options: [],
+    required: false,
+    preset: false
+  };
+  section.fields.push(newField);
+  saveToStorage();
+  const fl = document.getElementById('fl-' + sectionId);
+  if (fl) fl.appendChild(buildFieldItem(sectionId, newField));
+  showToast('تم إضافة حقل جديد ✅', 'success');
+}
+
+function deleteField(sectionId, fieldId) {
+  const section = getSectionById(sectionId);
+  if (!section) return;
+  section.fields = section.fields.filter(f => f.id !== fieldId);
+  delete section.values[fieldId];
+  saveToStorage();
+  const item = document.querySelector(`[data-field-id="${fieldId}"]`);
+  if (item) item.remove();
+  renderPreview();
+  showToast('تم حذف الحقل', 'warning');
+}
+
+function updateFieldProp(sectionId, fieldId, prop, value) {
+  const field = getFieldById(sectionId, fieldId);
+  if (!field) return;
+  field[prop] = value;
+  saveToStorage();
+  renderPreview();
+}
+
+function updateFieldType(sectionId, fieldId, type) {
+  const section = getSectionById(sectionId);
+  const field = section ? section.fields.find(f => f.id === fieldId) : null;
+  if (!field) return;
+  field.type = type;
+  if (type !== 'select') field.options = [];
+  delete section.values[fieldId];
+  saveToStorage();
+  const oldItem = document.querySelector(`[data-field-id="${fieldId}"]`);
+  if (oldItem) {
+    const newItem = buildFieldItem(sectionId, field);
+    oldItem.parentNode.replaceChild(newItem, oldItem);
+  }
+  renderPreview();
+}
+
+function updateFieldOptions(sectionId, fieldId, val) {
+  const field = getFieldById(sectionId, fieldId);
+  if (!field) return;
+  field.options = val.split(',').map(o => o.trim()).filter(Boolean);
+  saveToStorage();
+}
+
+function updateValue(sectionId, fieldId, value) {
+  const section = getSectionById(sectionId);
+  if (!section) return;
+  section.values[fieldId] = value;
+  saveToStorage();
+  if (currentTab === 'preview') renderPreview();
+}
+
+function toggleSection(sectionId) {
+  const card = document.getElementById('setup-card-' + sectionId);
+  if (card) card.classList.toggle('collapsed');
+}
+
+function toggleAddSectionForm() {
+  const f = document.getElementById('add-section-form');
+  f.classList.toggle('visible');
+  if (f.classList.contains('visible')) document.getElementById('new-section-name').focus();
+}
+
+function addCustomSection() {
+  const name = document.getElementById('new-section-name').value.trim();
+  const icon = document.getElementById('new-section-icon').value.trim() || '📁';
+  if (!name) { showToast('يرجى إدخال اسم القسم', 'danger'); return; }
+  const section = {
+    id: 's_' + Math.random().toString(36).substr(2,8),
+    name, icon, isDefault: false, fields: [], values: {}
+  };
+  appState.sections.push(section);
+  document.getElementById('new-section-name').value = '';
+  document.getElementById('new-section-icon').value = '';
+  toggleAddSectionForm();
+  saveToStorage();
+  renderAll();
+  showToast(`تم إضافة قسم "${name}" ✅`, 'success');
+}
+
+function deleteSection(sectionId) {
+  const s = getSectionById(sectionId);
+  if (!s || s.isDefault) { showToast('لا يمكن حذف الأقسام الأساسية', 'danger'); return; }
+  if (!confirm(`حذف قسم "${s.name}"؟`)) return;
+  appState.sections = appState.sections.filter(s => s.id !== sectionId);
+  saveToStorage();
+  renderAll();
+  showToast('تم حذف القسم', 'warning');
+}
+
+function updatePreviewDate() {
+  const el = document.getElementById('preview-date');
+  if (!el) return;
+  el.textContent = 'تاريخ الإنشاء: ' + new Date().toLocaleDateString('ar-SA', {
+    weekday:'long', year:'numeric', month:'long', day:'numeric',
+    hour:'2-digit', minute:'2-digit'
+  });
+}
+
+function renderPreview() {
+  const body = document.getElementById('preview-body');
+  if (!body) return;
+  body.innerHTML = '';
+  updatePreviewDate();
+
+  appState.sections.forEach(section => {
+    const sec = document.createElement('div');
+    sec.className = 'pdf-section';
+
+    const title = document.createElement('div');
+    title.className = 'pdf-section-title';
+    title.innerHTML = `<span>${section.icon || '📁'}</span><span>${esc(section.name)}</span>`;
+    sec.appendChild(title);
+
+    if (!section.fields.length) {
+      const empty = document.createElement('div');
+      empty.className = 'pdf-empty';
+      empty.textContent = 'لا توجد حقول في هذا القسم.';
+      sec.appendChild(empty);
+    } else {
+      const grid = document.createElement('div');
+      grid.className = 'pdf-fields';
+      section.fields.forEach(field => {
+        const fEl = document.createElement('div');
+        fEl.className = 'pdf-field';
+        if (field.type === 'textarea') fEl.style.gridColumn = '1/-1';
+        fEl.innerHTML = `
+          <div class="pdf-field-label">${esc(field.name)}${field.required?' *':''}</div>
+          <div class="pdf-field-value">${esc(section.values[field.id] || '')}</div>
+        `;
+        grid.appendChild(fEl);
+      });
+      sec.appendChild(grid);
+    }
+    body.appendChild(sec);
+  });
+}
+
+function saveToStorage() {
+  try { localStorage.setItem('hli_state_v2', JSON.stringify(appState)); } catch(e) {}
+}
+
+function saveSettings() {
+  saveToStorage();
+  showToast('تم الحفظ بنجاح ✅', 'success');
+}
+
+function exportJSON() {
+  const blob = new Blob([JSON.stringify(appState, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `hli-settings-${fmtDate(new Date())}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('تم تصدير الإعدادات ✅', 'success');
+}
+
+function openImportModal() {
+  document.getElementById('import-modal').classList.add('active');
+  document.getElementById('import-json-text').value = '';
+}
+function closeImportModal() { document.getElementById('import-modal').classList.remove('active'); }
+
+function importJSON() {
+  const text = document.getElementById('import-json-text').value.trim();
+  if (!text) { showToast('يرجى لصق محتوى JSON', 'danger'); return; }
+  try {
+    const data = JSON.parse(text);
+    if (!data.sections || !Array.isArray(data.sections)) throw new Error('بنية JSON غير صحيحة');
+    appState = data;
+    appState.sections.forEach(s => {
+      if (!s.values) s.values = {};
+      if (!s.fields) s.fields = [];
+      s.fields.forEach(f => { if (!f.options) f.options = []; });
+    });
+    saveToStorage();
+    closeImportModal();
+    renderAll();
+    showToast('تم الاستيراد بنجاح ✅', 'success');
+  } catch(e) {
+    showToast('خطأ في JSON: ' + e.message, 'danger');
+  }
+}
+
+function confirmReset() { document.getElementById('reset-modal').classList.add('active'); }
+function closeResetModal() { document.getElementById('reset-modal').classList.remove('active'); }
+function resetAll() {
+  localStorage.removeItem('hli_state_v2');
+  appState = { sections: deepClone(DEFAULT_SECTIONS) };
+  saveToStorage();
+  closeResetModal();
+  renderAll();
+  showToast('تم إعادة تعيين الصفحة', 'warning');
+}
+
+async function generatePDF() {
+  try {
+    showToast('جارٍ توليد PDF...', '');
+
+    const source = document.getElementById('pdf-content');
+    const filename = `hadhramout-langues-${fmtDate(new Date())}.pdf`;
+
+    const tempWrap = document.createElement('div');
+    tempWrap.style.position = 'fixed';
+    tempWrap.style.top = '0';
+    tempWrap.style.left = '-99999px';
+    tempWrap.style.width = '900px';
+    tempWrap.style.background = '#ffffff';
+    tempWrap.style.zIndex = '-1';
+    tempWrap.style.padding = '0';
+    tempWrap.style.margin = '0';
+
+    const clone = source.cloneNode(true);
+    clone.style.display = 'block';
+    clone.style.visibility = 'visible';
+    clone.style.opacity = '1';
+    clone.style.background = '#ffffff';
+
+    tempWrap.appendChild(clone);
+    document.body.appendChild(tempWrap);
+
+    if (document.fonts && document.fonts.ready) {
+      await document.fonts.ready;
+    }
+
+    const images = clone.querySelectorAll('img');
+    await Promise.all(
+      Array.from(images).map(img => {
+        if (img.complete) return Promise.resolve();
+        return new Promise(resolve => {
+          img.onload = resolve;
+          img.onerror = resolve;
+        });
+      })
+    );
+
+    await html2pdf().set({
+      margin: [12, 10, 12, 10],
+      filename,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: {
+        scale: 2,
+        useCORS: true,
+        allowTaint: false,
+        logging: false,
+        backgroundColor: '#ffffff'
+      },
+      jsPDF: {
+        unit: 'mm',
+        format: 'a4',
+        orientation: 'portrait'
+      },
+      pagebreak: { mode: ['css', 'legacy'] }
+    }).from(clone).save();
+
+    document.body.removeChild(tempWrap);
+    showToast('تم توليد PDF بنجاح ✅', 'success');
+
+  } catch (err) {
+    console.error(err);
+    showToast('فشل: ' + err.message, 'danger');
+  }
+}
+
+function openWhatsApp() {
+  const phone = '33777263112';
+  const msg = encodeURIComponent(
+`مرحباً،
+تم تعبئة نموذج بيانات المعهد.
+
+يرجى الاطلاع على ملف PDF المرفق.
+وفي حال وجود أي تعديلات يمكن إخبارنا بذلك.
+
+شكراً لكم 🌟`
+  );
+  window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
+}
+
+function sendEmail() {
+  const subject = encodeURIComponent("نموذج بيانات معهد حضرموت");
+  const body = encodeURIComponent(
+`مرحباً،
+
+تم تعبئة نموذج بيانات المعهد.
+
+يرجى إرفاق ملف PDF المولد وإرساله.
+
+شكراً لكم 🌟`
+  );
+  window.location.href = `mailto:Saleh738297@gmail.com,emadbagubair@gmail.com?subject=${subject}&body=${body}`;
+}
+
+async function shareFile() {
+  try {
+    showToast('جارٍ تحضير الملف للمشاركة...', '');
+
+    const source = document.getElementById('pdf-content');
+    const filename = `hadhramout-langues-${fmtDate(new Date())}.pdf`;
+
+    const tempWrap = document.createElement('div');
+    tempWrap.style.position = 'fixed';
+    tempWrap.style.top = '0';
+    tempWrap.style.left = '-99999px';
+    tempWrap.style.width = '900px';
+    tempWrap.style.background = '#ffffff';
+    tempWrap.style.zIndex = '-1';
+
+    const clone = source.cloneNode(true);
+    clone.style.display = 'block';
+    clone.style.visibility = 'visible';
+    clone.style.opacity = '1';
+    clone.style.background = '#ffffff';
+
+    tempWrap.appendChild(clone);
+    document.body.appendChild(tempWrap);
+
+    if (document.fonts && document.fonts.ready) {
+      await document.fonts.ready;
+    }
+
+    const images = clone.querySelectorAll('img');
+    await Promise.all(
+      Array.from(images).map(img => {
+        if (img.complete) return Promise.resolve();
+        return new Promise(resolve => {
+          img.onload = resolve;
+          img.onerror = resolve;
+        });
+      })
+    );
+
+    const worker = html2pdf().set({
+      margin: [12, 10, 12, 10],
+      filename,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: {
+        scale: 2,
+        useCORS: true,
+        allowTaint: false,
+        logging: false,
+        backgroundColor: '#ffffff'
+      },
+      jsPDF: {
+        unit: 'mm',
+        format: 'a4',
+        orientation: 'portrait'
+      }
+    }).from(clone);
+
+    const blob = await worker.outputPdf('blob');
+    document.body.removeChild(tempWrap);
+
+    const file = new File([blob], filename, { type: 'application/pdf' });
+
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({
+        title: 'نموذج بيانات معهد حضرموت للغات',
+        text: 'مرحباً، أرفق نموذج البيانات PDF.',
+        files: [file]
+      });
+      showToast('تمت المشاركة ✅', 'success');
+    } else {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('المشاركة المباشرة غير مدعومة في هذا المتصفح', 'warning');
+    }
+
+  } catch (err) {
+    console.error(err);
+    showToast('فشل تحضير الملف: ' + err.message, 'danger');
+  }
+}
+
+function getSectionById(id) { return appState.sections.find(s => s.id === id); }
+function getFieldById(sid, fid) {
+  const s = getSectionById(sid);
+  return s ? s.fields.find(f => f.id === fid) : null;
+}
+function esc(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+function deepClone(obj) { return JSON.parse(JSON.stringify(obj)); }
+function fmtDate(d) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}-${String(d.getHours()).padStart(2,'0')}-${String(d.getMinutes()).padStart(2,'0')}`;
+}
+
+function showToast(msg, type) {
+  const c = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(() => t.remove(), 2800);
+}
+
+['import-modal','reset-modal'].forEach(id => {
+  document.getElementById(id).addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('active');
+  });
+});
+
+initApp();
+</script>
+</body>
+</html>
